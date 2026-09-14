@@ -292,3 +292,6 @@ button{cursor:pointer}
  .task-item{grid-template-columns:auto 1fr}
  .task-item>.badge{grid-column:2}
 }
+
+/* Final sales-demo login state */
+body:not(.login-active) .login-screen{display:none!important;}

@@ -238,9 +238,12 @@ attentionList.addEventListener('click',e=>{
 
 
 const loginBtn = document.getElementById('login-btn');
-if (loginBtn) {
+const loginScreen = document.getElementById('login-screen');
+if (loginBtn && loginScreen) {
   loginBtn.addEventListener('click', () => {
-    document.getElementById('login-screen').classList.add('hidden');
+    loginScreen.classList.add('is-hidden');
+    document.body.classList.remove('login-active');
+    window.scrollTo({top:0, behavior:'instant'});
   });
 }
 
