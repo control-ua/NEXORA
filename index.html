@@ -4,18 +4,38 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#0d1117" />
-  <title>CONTROL AI — Демо</title>
+  <title>NEXORA — Бізнес під контролем</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+
+  <div class="login-screen" id="login-screen">
+    <div class="login-glow login-glow-a"></div>
+    <div class="login-glow login-glow-b"></div>
+    <div class="login-card">
+      <div class="login-logo">N</div>
+      <div class="eyebrow">NEXORA</div>
+      <h1>Керуйте заявками, командою та прибутком в одному місці</h1>
+      <p>Єдиний робочий простір для сервісного бізнесу та виїзних команд.</p>
+      <div class="login-fields">
+        <label>Робоча пошта</label>
+        <input value="demo@nexora.app" />
+        <label>Пароль</label>
+        <input type="password" value="nexorademo" />
+      </div>
+      <button class="primary-btn login-btn" id="login-btn">Увійти в NEXORA</button>
+      <div class="login-hint">Демо-доступ · дані тестові</div>
+    </div>
+  </div>
+
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand">
-        <div class="brand-mark">C</div>
+        <div class="brand-mark">N</div>
         <div>
-          <div class="brand-title">CONTROL AI</div>
-          <div class="brand-sub">Бізнес під контролем</div>
+          <div class="brand-title">NEXORA</div>
+          <div class="brand-sub">Operations Intelligence</div>
         </div>
       </div>
 
@@ -28,7 +48,7 @@
       </nav>
 
       <div class="sidebar-card">
-        <div class="small-label">AI-контроль</div>
+        <div class="small-label">NEXORA AI</div>
         <div class="sidebar-stat">7</div>
         <div class="sidebar-note">ситуацій потребують уваги</div>
       </div>
@@ -37,10 +57,11 @@
     <main class="main">
       <header class="topbar">
         <div>
-          <div class="eyebrow">ДЕМО-ПРОСТІР</div>
+          <div class="eyebrow">NEXORA WORKSPACE</div>
           <h1 id="page-title">Головна</h1>
         </div>
         <div class="top-actions">
+          <div class="company-pill">NEXORA Demo Company</div>
           <button class="ghost-btn" id="demo-alerts">🔔 <span>3</span></button>
           <div class="avatar">AZ</div>
         </div>
@@ -51,9 +72,9 @@
           <div>
             <div class="eyebrow">СЬОГОДНІ · 15 ВЕРЕСНЯ</div>
             <h2>Добрий ранок, Арсен</h2>
-            <p>Система вже знайшла 3 заявки, які можуть втратитися без контакту сьогодні.</p>
+            <p>NEXORA вже знайшла 3 заявки, які можуть втратитися без контакту сьогодні.</p>
           </div>
-          <button class="primary-btn" id="open-ai">Переглянути AI-рекомендації</button>
+          <button class="primary-btn" id="open-ai">Переглянути рекомендації NEXORA</button>
         </div>
 
         <div class="stats-grid">
@@ -83,7 +104,7 @@
           <div class="panel">
             <div class="panel-head">
               <div>
-                <div class="eyebrow">AI-КОНТРОЛЬ</div>
+                <div class="eyebrow">NEXORA AI</div>
                 <h3>Потребує уваги</h3>
               </div>
               <button class="link-btn" data-page-jump="leads">Усі заявки →</button>
@@ -141,7 +162,7 @@
         <div class="stats-grid analytics-stats">
           <div class="stat-card"><span class="stat-label">Конверсія</span><strong>31%</strong><span class="positive">+4,2%</span></div>
           <div class="stat-card"><span class="stat-label">Середній чек</span><strong>18 760 ₴</strong><span>за 30 днів</span></div>
-          <div class="stat-card"><span class="stat-label">AI повернув</span><strong>126 400 ₴</strong><span>потенційної виручки</span></div>
+          <div class="stat-card"><span class="stat-label">NEXORA повернула</span><strong>126 400 ₴</strong><span>потенційної виручки</span></div>
           <div class="stat-card"><span class="stat-label">Втрачено</span><strong>42 800 ₴</strong><span>без повторного контакту</span></div>
         </div>
 

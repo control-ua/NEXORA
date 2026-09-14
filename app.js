@@ -115,7 +115,7 @@ document.getElementById('modal-backdrop').addEventListener('click',e=>{if(e.targ
 document.getElementById('open-ai').addEventListener('click',()=>openModal(`
   <div class="eyebrow">AI-РЕКОМЕНДАЦІЇ</div>
   <h3>Сьогодні можна повернути до 74 800 ₴</h3>
-  <p>Система знайшла три ситуації, де швидка дія може підвищити шанс на продаж.</p>
+  <p>NEXORA знайшла три ситуації, де швидка дія може підвищити шанс на продаж.</p>
   <ul>
     <li>Передзвонити Олександру — заявка без відповіді 47 хв.</li>
     <li>Повторно написати Марині — КП без реакції 2 дні.</li>
@@ -132,5 +132,13 @@ attentionList.addEventListener('click',e=>{
   const btn=e.target.closest('[data-attention]');
   if(!btn) return;
   const a=attention[Number(btn.dataset.attention)];
-  openModal(`<div class="eyebrow">AI-КОНТРОЛЬ</div><h3>${a.title}</h3><p>${a.sub}</p><p>Рекомендована дія: зв’язатися з клієнтом або відповідальним співробітником зараз, щоб не втратити угоду.</p>`);
+  openModal(`<div class="eyebrow">NEXORA AI</div><h3>${a.title}</h3><p>${a.sub}</p><p>Рекомендована дія: зв’язатися з клієнтом або відповідальним співробітником зараз, щоб не втратити угоду.</p>`);
 });
+
+
+const loginBtn = document.getElementById('login-btn');
+if (loginBtn) {
+  loginBtn.addEventListener('click', () => {
+    document.getElementById('login-screen').classList.add('hidden');
+  });
+}

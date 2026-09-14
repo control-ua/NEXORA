@@ -129,3 +129,117 @@ button{cursor:pointer}
   .toolbar,.section-intro{align-items:stretch;flex-direction:column}
   .primary-btn{width:100%}
 }
+
+
+.company-pill{
+  border:1px solid var(--line);
+  background:#101722;
+  color:#aeb9c8;
+  border-radius:999px;
+  padding:10px 13px;
+  font-size:12px;
+  font-weight:700;
+}
+.login-screen{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:#080d13;
+  overflow:hidden;
+}
+.login-screen.hidden{
+  display:none;
+}
+.login-glow{
+  position:absolute;
+  width:520px;
+  height:520px;
+  border-radius:50%;
+  filter:blur(70px);
+  opacity:.22;
+}
+.login-glow-a{
+  top:-200px;
+  right:-120px;
+  background:#5cc8ff;
+}
+.login-glow-b{
+  bottom:-220px;
+  left:-100px;
+  background:#7df6bf;
+}
+.login-card{
+  position:relative;
+  width:min(480px,100%);
+  padding:34px;
+  border:1px solid #26364b;
+  background:rgba(16,23,34,.94);
+  border-radius:28px;
+  box-shadow:0 35px 100px rgba(0,0,0,.55);
+  backdrop-filter:blur(18px);
+}
+.login-logo{
+  width:54px;
+  height:54px;
+  display:grid;
+  place-items:center;
+  border-radius:17px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#07110f;
+  font-size:25px;
+  font-weight:900;
+  margin-bottom:20px;
+}
+.login-card h1{
+  font-size:31px;
+  line-height:1.08;
+  letter-spacing:-.04em;
+  margin:8px 0 12px;
+}
+.login-card>p{
+  color:#9aa8b9;
+  line-height:1.6;
+  margin:0 0 22px;
+}
+.login-fields{
+  display:grid;
+  gap:8px;
+}
+.login-fields label{
+  font-size:12px;
+  color:#8997a9;
+  margin-top:6px;
+}
+.login-fields input{
+  width:100%;
+  border:1px solid var(--line);
+  background:#0d141e;
+  color:#f4f7fb;
+  padding:13px 14px;
+  border-radius:13px;
+  outline:none;
+}
+.login-fields input:focus{
+  border-color:rgba(125,246,191,.5);
+  box-shadow:0 0 0 3px rgba(125,246,191,.07);
+}
+.login-btn{
+  width:100%;
+  margin-top:18px;
+  padding:14px 16px;
+}
+.login-hint{
+  margin-top:14px;
+  text-align:center;
+  font-size:12px;
+  color:#6f7d90;
+}
+@media (max-width:720px){
+  .company-pill{display:none}
+  .login-card{padding:24px}
+  .login-card h1{font-size:27px}
+}

@@ -1,9 +1,10 @@
 {
-  "name": "CONTROL AI Demo",
-  "short_name": "CONTROL AI",
+  "name": "NEXORA",
+  "short_name": "NEXORA",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#0a0f16",
   "theme_color": "#0d1117",
+  "description": "NEXORA — заявки, команда, об'єкти та аналітика в одному робочому просторі.",
   "icons": []
 }
