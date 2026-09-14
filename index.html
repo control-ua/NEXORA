@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#0d1117" />
   <title>NEXORA — Бізнес під контролем</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=20260915-final" />
+  <link rel="stylesheet" href="styles.css?v=20260915-pro" />
 
 <style id="nexora-critical-login">
 html,body{margin:0;min-height:100%;background:#070c12}
@@ -106,13 +106,27 @@ body.login-active .app-shell{display:none!important}
       </div>
 
       <nav class="nav">
-        <button class="nav-item active" data-page="dashboard">⌂ <span>Головна</span></button>
-        <button class="nav-item" data-page="leads">◎ <span>Заявки</span></button>
-        <button class="nav-item" data-page="objects">▦ <span>Об’єкти</span></button>
-        <button class="nav-item" data-page="team">👥 <span>Команда</span></button>
-        <button class="nav-item" data-page="analytics">↗ <span>Аналітика</span></button>
-        <button class="nav-item" data-page="tasks">✓ <span>Завдання</span></button>
-        <button class="nav-item" data-page="settings">⚙ <span>Налаштування</span></button>
+        <div class="nav-group-label">РОБОЧИЙ ПРОСТІР</div>
+        <button class="nav-item active" data-page="dashboard"><span class="nav-icon">⌂</span><span>Головна</span></button>
+        <button class="nav-item" data-page="inbox"><span class="nav-icon">✉</span><span>Вхідні</span><b class="nav-count">5</b></button>
+        <button class="nav-item" data-page="leads"><span class="nav-icon">◎</span><span>Заявки</span><b class="nav-count">12</b></button>
+        <button class="nav-item" data-page="clients"><span class="nav-icon">◉</span><span>Клієнти</span></button>
+        <button class="nav-item" data-page="calendar"><span class="nav-icon">□</span><span>Календар</span></button>
+
+        <div class="nav-group-label">ВИКОНАННЯ</div>
+        <button class="nav-item" data-page="objects"><span class="nav-icon">▦</span><span>Об’єкти</span></button>
+        <button class="nav-item" data-page="team"><span class="nav-icon">♙</span><span>Команда</span></button>
+        <button class="nav-item" data-page="tasks"><span class="nav-icon">✓</span><span>Завдання</span><b class="nav-count danger-count">2</b></button>
+
+        <div class="nav-group-label">БІЗНЕС</div>
+        <button class="nav-item" data-page="finance"><span class="nav-icon">₴</span><span>Фінанси</span></button>
+        <button class="nav-item" data-page="documents"><span class="nav-icon">▤</span><span>Документи</span></button>
+        <button class="nav-item" data-page="inventory"><span class="nav-icon">◇</span><span>Склад</span></button>
+        <button class="nav-item" data-page="analytics"><span class="nav-icon">↗</span><span>Аналітика</span></button>
+
+        <div class="nav-group-label">СИСТЕМА</div>
+        <button class="nav-item nav-ai" data-page="ai"><span class="nav-icon">✦</span><span>NEXORA AI</span></button>
+        <button class="nav-item" data-page="settings"><span class="nav-icon">⚙</span><span>Налаштування</span></button>
       </nav>
 
       <div class="sidebar-card">
@@ -129,7 +143,7 @@ body.login-active .app-shell{display:none!important}
           <h1 id="page-title">Головна</h1>
         </div>
         <div class="top-actions">
-          <div class="company-pill">NEXORA Demo Company</div>
+          <button class="top-create" id="quick-create">+ Створити</button><div class="company-pill">NEXORA Demo Company</div>
           <button class="ghost-btn" id="demo-alerts">🔔 <span>3</span></button>
           <div class="avatar">AZ</div>
         </div>
@@ -280,7 +294,133 @@ body.login-active .app-shell{display:none!important}
         <div class="task-list" id="task-list"></div>
       </section>
 
-      <section id="settings" class="page">
+      
+      <section id="inbox" class="page">
+        <div class="section-intro">
+          <div><div class="eyebrow">OMNICHANNEL</div><h2>Вхідні звернення</h2></div>
+          <button class="primary-btn" id="mark-inbox">Позначити все прочитаним</button>
+        </div>
+        <div class="inbox-layout">
+          <div class="panel inbox-list">
+            <div class="inbox-item unread"><div class="channel-icon">IG</div><div><b>Олександр К.</b><small>Instagram · Хочу дізнатись ціну монтажу</small></div><span>2 хв</span></div>
+            <div class="inbox-item unread"><div class="channel-icon">TG</div><div><b>ТОВ Альфа</b><small>Telegram · Надішліть, будь ласка, оновлене КП</small></div><span>8 хв</span></div>
+            <div class="inbox-item unread"><div class="channel-icon">WB</div><div><b>Марина П.</b><small>Сайт · Залишила нову заявку</small></div><span>17 хв</span></div>
+            <div class="inbox-item"><div class="channel-icon">VB</div><div><b>Ігор М.</b><small>Viber · Дякую, майстер вже приїхав</small></div><span>41 хв</span></div>
+            <div class="inbox-item"><div class="channel-icon">PH</div><div><b>Роман В.</b><small>Дзвінок · Попросив перенести виїзд</small></div><span>1 год</span></div>
+          </div>
+          <div class="panel conversation-preview">
+            <div class="eyebrow">ЄДИНЕ ВІКНО</div>
+            <h3>Усі канали — в одному місці</h3>
+            <p class="meta">Instagram, Telegram, сайт, дзвінки та месенджери можна збирати в один центр звернень.</p>
+            <div class="chat-demo"><span>Клієнт</span><p>Підкажіть, скільки коштує монтаж?</p></div>
+            <div class="chat-demo mine"><span>Менеджер</span><p>Доброго дня! Уточніть, будь ласка, адресу та модель.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="clients" class="page">
+        <div class="section-intro">
+          <div><div class="eyebrow">CLIENT BASE</div><h2>Клієнти</h2></div>
+          <button class="primary-btn" id="add-client-demo">+ Додати клієнта</button>
+        </div>
+        <div class="toolbar">
+          <div class="search-wrap"><input id="client-search" placeholder="Пошук клієнта, телефону або компанії"></div>
+          <span class="chip">126 клієнтів</span>
+        </div>
+        <div class="data-table" id="clients-table"></div>
+      </section>
+
+      <section id="calendar" class="page">
+        <div class="section-intro">
+          <div><div class="eyebrow">ПЛАНУВАННЯ</div><h2>Календар робіт</h2></div>
+          <button class="primary-btn" id="calendar-add">+ Запланувати</button>
+        </div>
+        <div class="calendar-week">
+          <div class="calendar-day"><div class="day-head"><b>Пн</b><span>14</span></div><div class="cal-event muted-event">09:00 · Заміри</div></div>
+          <div class="calendar-day today"><div class="day-head"><b>Вт</b><span>15</span></div><div class="cal-event">09:30 · Монтаж</div><div class="cal-event alt">12:00 · Заміри</div><div class="cal-event warn-event">15:30 · Сервіс</div></div>
+          <div class="calendar-day"><div class="day-head"><b>Ср</b><span>16</span></div><div class="cal-event">10:00 · Покрівля</div></div>
+          <div class="calendar-day"><div class="day-head"><b>Чт</b><span>17</span></div><div class="cal-event alt">11:00 · Вікна</div><div class="cal-event">14:00 · Виїзд</div></div>
+          <div class="calendar-day"><div class="day-head"><b>Пт</b><span>18</span></div><div class="cal-event">09:00 · Монтаж</div></div>
+          <div class="calendar-day"><div class="day-head"><b>Сб</b><span>19</span></div><div class="cal-event muted-event">Резерв</div></div>
+          <div class="calendar-day"><div class="day-head"><b>Нд</b><span>20</span></div></div>
+        </div>
+      </section>
+
+      <section id="finance" class="page">
+        <div class="section-intro">
+          <div><div class="eyebrow">CASH FLOW</div><h2>Фінанси</h2></div>
+          <button class="primary-btn" id="add-payment">+ Додати платіж</button>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><span class="stat-label">Дохід за місяць</span><strong>487 300 ₴</strong><span class="positive">+12,4%</span></div>
+          <div class="stat-card"><span class="stat-label">Витрати</span><strong>219 700 ₴</strong><span>45% від доходу</span></div>
+          <div class="stat-card"><span class="stat-label">Прибуток</span><strong>267 600 ₴</strong><span class="positive">55% маржа</span></div>
+          <div class="stat-card danger"><span class="stat-label">Очікуємо оплату</span><strong>118 000 ₴</strong><span>4 рахунки</span></div>
+        </div>
+        <div class="content-grid">
+          <div class="panel">
+            <div class="panel-head"><h3>Останні платежі</h3></div>
+            <div class="finance-rows">
+              <div><span><b>ТОВ Альфа</b><small>Оплата за монтаж</small></span><strong class="positive">+48 000 ₴</strong></div>
+              <div><span><b>Матеріали</b><small>Постачальник</small></span><strong class="expense">−21 400 ₴</strong></div>
+              <div><span><b>Марина П.</b><small>Передоплата</small></span><strong class="positive">+20 000 ₴</strong></div>
+              <div><span><b>Паливо</b><small>Виїзні бригади</small></span><strong class="expense">−6 800 ₴</strong></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Дебіторка</h3><span class="chip">118 000 ₴</span></div>
+            <div class="debt-card"><b>Роман В.</b><span>68 500 ₴</span><small>термін оплати: сьогодні</small></div>
+            <div class="debt-card"><b>ТОВ Будсервіс</b><span>49 500 ₴</span><small>прострочено на 2 дні</small></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="documents" class="page">
+        <div class="section-intro">
+          <div><div class="eyebrow">FILES & DOCS</div><h2>Документи</h2></div>
+          <button class="primary-btn" id="new-document">+ Новий документ</button>
+        </div>
+        <div class="doc-grid">
+          <div class="doc-card"><div class="doc-icon">КП</div><b>Комерційна пропозиція №1048</b><small>ТОВ Альфа · 96 000 ₴</small><span>Переглянуто клієнтом</span></div>
+          <div class="doc-card"><div class="doc-icon">РХ</div><b>Рахунок №221</b><small>Роман В. · 68 500 ₴</small><span class="doc-warning">Очікує оплати</span></div>
+          <div class="doc-card"><div class="doc-icon">АК</div><b>Акт виконаних робіт</b><small>Ігор М. · 12 400 ₴</small><span>Підписано</span></div>
+          <div class="doc-card"><div class="doc-icon">ДГ</div><b>Договір на монтаж</b><small>Марина П. · 42 000 ₴</small><span>Активний</span></div>
+          <div class="doc-card"><div class="doc-icon">КШ</div><b>Кошторис об’єкта</b><small>Ремонт покрівлі</small><span>Версія 3</span></div>
+          <div class="doc-card add-doc-card" id="doc-drop"><b>＋</b><small>Завантажити файл</small></div>
+        </div>
+      </section>
+
+      <section id="inventory" class="page">
+        <div class="section-intro">
+          <div><div class="eyebrow">INVENTORY</div><h2>Склад і матеріали</h2></div>
+          <button class="primary-btn" id="inventory-add">+ Додати позицію</button>
+        </div>
+        <div class="inventory-summary">
+          <div><span>Позицій</span><b>47</b></div><div><span>Вартість запасів</span><b>184 200 ₴</b></div><div><span>Закінчується</span><b class="expense">4</b></div>
+        </div>
+        <div class="data-table">
+          <div class="table-row table-head"><span>Матеріал</span><span>Залишок</span><span>Резерв</span><span>Статус</span></div>
+          <div class="table-row"><span><b>Кабель 3×2.5</b><small>100 м бухта</small></span><span>240 м</span><span>80 м</span><span class="stock-ok">В нормі</span></div>
+          <div class="table-row"><span><b>Кронштейн монтажний</b><small>шт.</small></span><span>18</span><span>12</span><span class="stock-low">Мало</span></div>
+          <div class="table-row"><span><b>Труба мідна 1/4</b><small>м</small></span><span>66 м</span><span>20 м</span><span class="stock-ok">В нормі</span></div>
+          <div class="table-row"><span><b>Кріплення комплект</b><small>компл.</small></span><span>7</span><span>6</span><span class="stock-low">Замовити</span></div>
+        </div>
+      </section>
+
+      <section id="ai" class="page">
+        <div class="ai-hero">
+          <div><div class="eyebrow">NEXORA INTELLIGENCE</div><h2>AI-центр керівника</h2><p>NEXORA аналізує заявки, оплату, дедлайни та роботу команди й показує, де потрібна ваша увага.</p></div>
+          <div class="ai-score"><span>Business Health</span><b>82</b><small>із 100 · добре</small></div>
+        </div>
+        <div class="ai-grid">
+          <div class="ai-insight critical"><span>ПРОДАЖІ</span><h3>74 800 ₴ під ризиком</h3><p>3 клієнти не отримали своєчасний follow-up.</p><button data-page-jump="leads">Відкрити заявки →</button></div>
+          <div class="ai-insight warning-ai"><span>ОБ’ЄКТИ</span><h3>1 об’єкт відстає</h3><p>Ремонт покрівлі відстає від графіка на 1 день.</p><button data-page-jump="objects">Перевірити →</button></div>
+          <div class="ai-insight"><span>ФІНАНСИ</span><h3>118 000 ₴ очікує оплати</h3><p>Один рахунок уже потребує нагадування клієнту.</p><button data-page-jump="finance">До фінансів →</button></div>
+          <div class="ai-insight"><span>КОМАНДА</span><h3>Бригада 1 — 92%</h3><p>На завтра краще не додавати ще один великий виїзд.</p><button data-page-jump="team">Команда →</button></div>
+        </div>
+      </section>
+
+<section id="settings" class="page">
         <div class="section-intro">
           <div><div class="eyebrow">NEXORA</div><h2>Налаштування компанії</h2></div>
         </div>
@@ -348,6 +488,6 @@ body.login-active .app-shell{display:none!important}
     </form>
   </template>
 
-  <script src="app.js?v=20260915-final"></script>
+  <script src="app.js?v=20260915-pro"></script>
 </body>
 </html>

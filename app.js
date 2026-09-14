@@ -42,7 +42,7 @@ function switchPage(page){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(page).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active', b.dataset.page===page));
-  const titles = {dashboard:'Головна',leads:'Заявки',objects:'Об’єкти',team:'Команда',analytics:'Аналітика',tasks:'Завдання',settings:'Налаштування'};
+  const titles = {dashboard:'Головна',inbox:'Вхідні',leads:'Заявки',clients:'Клієнти',calendar:'Календар',objects:'Об’єкти',team:'Команда',tasks:'Завдання',finance:'Фінанси',documents:'Документи',inventory:'Склад',analytics:'Аналітика',ai:'NEXORA AI',settings:'Налаштування'};
   document.getElementById('page-title').textContent = titles[page];
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -290,3 +290,45 @@ document.getElementById('save-settings').addEventListener('click',()=>{
  document.querySelector('.company-pill').textContent=name; localStorage.setItem('nexora_company',name);toast('Налаштування збережено');
 });
 const savedCompany=localStorage.getItem('nexora_company');if(savedCompany){document.getElementById('company-name').value=savedCompany;document.querySelector('.company-pill').textContent=savedCompany;}
+
+
+// NEXORA PRO modules
+const clientRows = [
+ ['Олександр К.','+380 67 321 45 67','18 500 ₴','Активний'],
+ ['Марина П.','+380 50 238 11 09','42 000 ₴','КП'],
+ ['ТОВ Альфа','+380 66 190 77 52','96 000 ₴','VIP'],
+ ['Ігор М.','+380 93 517 02 20','12 400 ₴','В роботі'],
+ ['Роман В.','+380 63 447 29 60','68 500 ₴','Борг'],
+ ['Світлана Д.','+380 98 550 18 44','7 600 ₴','Новий']
+];
+
+function renderClients(){
+ const box=document.getElementById('clients-table'); if(!box)return;
+ const q=(document.getElementById('client-search')?.value||'').toLowerCase();
+ const rows=clientRows.filter(r=>r.join(' ').toLowerCase().includes(q));
+ box.innerHTML=`<div class="table-row table-head"><span>Клієнт</span><span>Телефон</span><span>Сума</span><span>Статус</span></div>`+
+ rows.map(r=>`<div class="table-row"><span class="client-name"><i class="client-avatar">${r[0].split(' ').map(x=>x[0]).join('').slice(0,2)}</i><span><b>${r[0]}</b><small>Остання активність сьогодні</small></span></span><span>${r[1]}</span><span><b>${r[2]}</b></span><span class="badge">${r[3]}</span></div>`).join('');
+}
+renderClients();
+document.getElementById('client-search')?.addEventListener('input',renderClients);
+
+document.querySelectorAll('[data-page-jump]').forEach(btn=>{
+ if(!btn.dataset.proBound){
+   btn.dataset.proBound='1';
+   btn.addEventListener('click',()=>switchPage(btn.dataset.pageJump));
+ }
+});
+
+const simpleDemoActions = {
+ 'quick-create':'Швидке створення: заявка, задача, об’єкт або платіж.',
+ 'mark-inbox':'Усі вхідні звернення позначено прочитаними.',
+ 'add-client-demo':'У реальній версії тут створюється картка клієнта.',
+ 'calendar-add':'Новий виїзд можна призначити співробітнику або бригаді.',
+ 'add-payment':'Платіж додано до фінансового журналу.',
+ 'new-document':'Тут можна створити КП, рахунок, акт або договір.',
+ 'doc-drop':'Файл буде прикріплено до клієнта або об’єкта.',
+ 'inventory-add':'Нова складська позиція готова до створення.'
+};
+Object.entries(simpleDemoActions).forEach(([id,text])=>{
+ document.getElementById(id)?.addEventListener('click',()=>openModal(`<div class="eyebrow">NEXORA PRO</div><h3>${text}</h3><p>Це демонстраційний екран. Після підключення бекенду дія буде зберігатися для всієї команди.</p>`));
+});
