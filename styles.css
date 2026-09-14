@@ -263,3 +263,32 @@ button{cursor:pointer}
 .toast{position:fixed;right:24px;bottom:24px;z-index:200;background:#152131;border:1px solid #31445d;color:white;padding:13px 16px;border-radius:14px;box-shadow:var(--shadow);transform:translateY(120px);opacity:0;transition:.25s}
 .toast.show{transform:translateY(0);opacity:1}
 @media(max-width:720px){.lead-kpis{grid-template-columns:1fr}.select-control{min-height:44px}.form-grid{grid-template-columns:1fr}.form-grid .full{grid-column:auto}.toast{left:14px;right:14px;bottom:88px}}
+
+.task-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.filter-btn{border:1px solid var(--line);background:#101722;color:#9cabbc;border-radius:999px;padding:9px 13px}
+.filter-btn.active{background:#1a2938;color:white;border-color:#40566f}
+.task-list{display:grid;gap:10px}
+.task-item{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:13px;background:#111824;border:1px solid var(--line);border-radius:16px;padding:15px}
+.task-check{width:23px;height:23px}
+.task-item.done{opacity:.55}
+.task-item.done b{text-decoration:line-through}
+.task-item small{display:block;color:var(--muted);margin-top:4px}
+.due-overdue{color:var(--danger)!important}
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.settings-label{display:grid;gap:6px;color:var(--muted);font-size:12px;margin:13px 0}
+.settings-label input{border:1px solid var(--line);background:#0d141e;color:white;padding:12px;border-radius:12px}
+.toggle-row{display:flex;justify-content:space-between;gap:20px;align-items:center;padding:16px 0;border-top:1px solid rgba(255,255,255,.06)}
+.toggle-row:first-of-type{border-top:0}
+.toggle-row small{display:block;color:var(--muted);margin-top:5px;line-height:1.4}
+.toggle-row input{width:20px;height:20px}
+.object-card.overdue{border-color:rgba(255,124,137,.45)}
+.object-card .object-actions{display:flex;gap:8px;margin-top:13px}
+.object-card .object-actions button{flex:1;border:1px solid var(--line);background:#0f1722;color:white;border-radius:10px;padding:8px}
+@media(max-width:1024px){.nav{gap:5px}.nav-item{padding:11px}}
+@media(max-width:720px){
+ .nav{grid-template-columns:repeat(7,1fr)}
+ .nav-item{font-size:16px;padding:9px 2px}
+ .settings-grid{grid-template-columns:1fr}
+ .task-item{grid-template-columns:auto 1fr}
+ .task-item>.badge{grid-column:2}
+}

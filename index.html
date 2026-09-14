@@ -45,6 +45,8 @@
         <button class="nav-item" data-page="objects">▦ <span>Об’єкти</span></button>
         <button class="nav-item" data-page="team">👥 <span>Команда</span></button>
         <button class="nav-item" data-page="analytics">↗ <span>Аналітика</span></button>
+        <button class="nav-item" data-page="tasks">✓ <span>Завдання</span></button>
+        <button class="nav-item" data-page="settings">⚙ <span>Налаштування</span></button>
       </nav>
 
       <div class="sidebar-card">
@@ -157,7 +159,7 @@
             <div class="eyebrow">ОБ’ЄКТИ</div>
             <h2>Виконання робіт</h2>
           </div>
-          <span class="chip">8 активних</span>
+          <button class="primary-btn" id="add-object">+ Новий об’єкт</button>
         </div>
         <div class="object-grid" id="object-grid"></div>
       </section>
@@ -197,6 +199,41 @@
           </div>
         </div>
       </section>
+
+      <section id="tasks" class="page">
+        <div class="section-intro">
+          <div><div class="eyebrow">КОНТРОЛЬ</div><h2>Завдання та дедлайни</h2></div>
+          <button class="primary-btn" id="add-task">+ Нове завдання</button>
+        </div>
+        <div class="task-filters">
+          <button class="filter-btn active" data-task-filter="all">Усі</button>
+          <button class="filter-btn" data-task-filter="today">Сьогодні</button>
+          <button class="filter-btn" data-task-filter="overdue">Прострочені</button>
+          <button class="filter-btn" data-task-filter="done">Виконані</button>
+        </div>
+        <div class="task-list" id="task-list"></div>
+      </section>
+
+      <section id="settings" class="page">
+        <div class="section-intro">
+          <div><div class="eyebrow">NEXORA</div><h2>Налаштування компанії</h2></div>
+        </div>
+        <div class="settings-grid">
+          <div class="panel">
+            <h3>Профіль компанії</h3>
+            <label class="settings-label">Назва<input id="company-name" value="NEXORA Demo Company"></label>
+            <label class="settings-label">Телефон<input value="+380 67 000 00 00"></label>
+            <label class="settings-label">Email<input value="office@nexora.app"></label>
+            <button class="primary-btn" id="save-settings">Зберегти</button>
+          </div>
+          <div class="panel">
+            <h3>Автоматизація</h3>
+            <div class="toggle-row"><div><b>Контроль нових заявок</b><small>NEXORA сигналізує, якщо клієнту не відповіли</small></div><input type="checkbox" checked></div>
+            <div class="toggle-row"><div><b>Контроль дедлайнів</b><small>Попередження про прострочені об’єкти</small></div><input type="checkbox" checked></div>
+            <div class="toggle-row"><div><b>Follow-up клієнтів</b><small>Нагадування менеджеру після відправки КП</small></div><input type="checkbox" checked></div>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
 
@@ -206,6 +243,29 @@
       <div id="modal-content"></div>
     </div>
   </div>
+
+  <template id="task-form-template">
+    <form id="task-form" class="form-grid">
+      <div class="eyebrow full">НОВЕ ЗАВДАННЯ</div><h3 class="full">Створити завдання</h3>
+      <label class="full">Назва<input name="title" required placeholder="Передзвонити клієнту"></label>
+      <label>Відповідальний<select name="owner"><option>Олексій Марченко</option><option>Сергій Коваль</option><option>Арсен</option></select></label>
+      <label>Термін<select name="due"><option value="today">Сьогодні</option><option value="tomorrow">Завтра</option><option value="overdue">Прострочено</option></select></label>
+      <button class="primary-btn full" type="submit">Створити</button>
+    </form>
+  </template>
+
+  <template id="object-form-template">
+    <form id="object-form" class="form-grid">
+      <div class="eyebrow full">НОВИЙ ОБ’ЄКТ</div><h3 class="full">Запустити виконання</h3>
+      <label class="full">Назва робіт<input name="title" required placeholder="Монтаж обладнання"></label>
+      <label>Клієнт<input name="client" required></label>
+      <label>Вартість<input name="value" type="number" required></label>
+      <label class="full">Адреса<input name="address" required></label>
+      <label>Бригада<select name="crew"><option>Бригада 1</option><option>Бригада 2</option><option>Бригада 3</option><option>Олексій</option></select></label>
+      <label>Дедлайн<input name="deadline" type="date" required></label>
+      <button class="primary-btn full" type="submit">Створити об’єкт</button>
+    </form>
+  </template>
 
   <template id="lead-form-template">
     <form id="lead-form" class="form-grid">

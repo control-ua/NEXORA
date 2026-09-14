@@ -11,14 +11,17 @@ let leads;
 try { leads = JSON.parse(localStorage.getItem('nexora_leads')) || defaultLeads; } catch(e){ leads = defaultLeads; }
 function saveLeads(){ localStorage.setItem('nexora_leads', JSON.stringify(leads)); }
 
-const objects = [
-  {title:'Монтаж кондиціонера', client:'Олександр К.', address:'вул. Старокозацька, 44', progress:65, crew:'Бригада 1', value:'18 500 ₴'},
-  {title:'Заміри та монтаж вікон', client:'Марина П.', address:'ж/м Перемога, 5', progress:35, crew:'Олексій', value:'42 000 ₴'},
-  {title:'Сервіс воріт', client:'Ігор М.', address:'вул. Калинова, 87', progress:80, crew:'Бригада 2', value:'12 400 ₴'},
-  {title:'Монтаж обладнання', client:'ТОВ Альфа', address:'просп. Поля, 112', progress:20, crew:'Бригада 3', value:'96 000 ₴'},
-  {title:'Ремонт покрівлі', client:'Роман В.', address:'вул. Робоча, 19', progress:52, crew:'Бригада 1', value:'68 500 ₴'},
-  {title:'Клінінг офісу', client:'Світлана Д.', address:'вул. Воскресенська, 14', progress:10, crew:'Марія', value:'7 600 ₴'}
+const defaultObjects = [
+  {id:101,title:'Монтаж кондиціонера', client:'Олександр К.', address:'вул. Старокозацька, 44', progress:65, crew:'Бригада 1', value:18500, deadline:'2026-09-15', photosBefore:2, photosAfter:0},
+  {id:102,title:'Заміри та монтаж вікон', client:'Марина П.', address:'ж/м Перемога, 5', progress:35, crew:'Олексій', value:42000, deadline:'2026-09-18', photosBefore:3, photosAfter:0},
+  {id:103,title:'Сервіс воріт', client:'Ігор М.', address:'вул. Калинова, 87', progress:80, crew:'Бригада 2', value:12400, deadline:'2026-09-15', photosBefore:2, photosAfter:1},
+  {id:104,title:'Монтаж обладнання', client:'ТОВ Альфа', address:'просп. Поля, 112', progress:20, crew:'Бригада 3', value:96000, deadline:'2026-09-22', photosBefore:4, photosAfter:0},
+  {id:105,title:'Ремонт покрівлі', client:'Роман В.', address:'вул. Робоча, 19', progress:52, crew:'Бригада 1', value:68500, deadline:'2026-09-14', photosBefore:5, photosAfter:0},
+  {id:106,title:'Клінінг офісу', client:'Світлана Д.', address:'вул. Воскресенська, 14', progress:10, crew:'Марія', value:7600, deadline:'2026-09-16', photosBefore:1, photosAfter:0}
 ];
+let objects;
+try { objects=JSON.parse(localStorage.getItem('nexora_objects'))||defaultObjects; } catch(e){objects=defaultObjects}
+function saveObjects(){localStorage.setItem('nexora_objects',JSON.stringify(objects));}
 
 const team = [
   {name:'Олексій Марченко', role:'Менеджер', jobs:7, load:82, initials:'ОМ'},
@@ -39,7 +42,7 @@ function switchPage(page){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(page).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active', b.dataset.page===page));
-  const titles = {dashboard:'Головна',leads:'Заявки',objects:'Об’єкти',team:'Команда',analytics:'Аналітика'};
+  const titles = {dashboard:'Головна',leads:'Заявки',objects:'Об’єкти',team:'Команда',analytics:'Аналітика',tasks:'Завдання',settings:'Налаштування'};
   document.getElementById('page-title').textContent = titles[page];
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -133,14 +136,44 @@ window.updateLeadStatus=function(id){
 };
 
 const objectGrid=document.getElementById('object-grid');
-objects.forEach(o=>{
-  const card=document.createElement('div');
-  card.className='object-card';
-  card.innerHTML=`<div class="eyebrow">АКТИВНИЙ ОБ’ЄКТ</div><h3>${o.title}</h3><div class="meta">${o.client}<br>${o.address}<br>${o.crew}</div><div class="progress"><span style="width:${o.progress}%"></span></div><div class="lead-top"><small>${o.progress}% виконано</small><b>${o.value}</b></div>`;
-  card.addEventListener('click',()=>openModal(`<div class="eyebrow">ОБ’ЄКТ</div><h3>${o.title}</h3><p>${o.client}<br>${o.address}</p><p><b>Виконавець:</b> ${o.crew}<br><b>Прогрес:</b> ${o.progress}%<br><b>Вартість:</b> ${o.value}</p><ul><li>Фото «до» — завантажено</li><li>Чек-лист робіт — 6/9</li><li>Фото «після» — очікується</li></ul>`));
-  objectGrid.appendChild(card);
+function renderObjects(){
+  objectGrid.innerHTML='';
+  objects.forEach(o=>{
+    const overdue=o.deadline<'2026-09-15' && o.progress<100;
+    const card=document.createElement('div');
+    card.className='object-card'+(overdue?' overdue':'');
+    card.innerHTML=`<div class="eyebrow">${overdue?'ПРОСТРОЧЕНО':'АКТИВНИЙ ОБ’ЄКТ'}</div><h3>${o.title}</h3>
+      <div class="meta">${o.client}<br>${o.address}<br>${o.crew}<br>Дедлайн: ${o.deadline}</div>
+      <div class="progress"><span style="width:${o.progress}%"></span></div>
+      <div class="lead-top"><small>${o.progress}% виконано</small><b>${Number(o.value).toLocaleString('uk-UA')} ₴</b></div>
+      <div class="object-actions"><button data-obj="${o.id}">Картка</button><button data-progress="${o.id}">+10%</button></div>`;
+    objectGrid.appendChild(card);
+  });
+}
+renderObjects();
+objectGrid.addEventListener('click',e=>{
+ const open=e.target.closest('[data-obj]'), prog=e.target.closest('[data-progress]');
+ if(open){
+   const o=objects.find(x=>x.id===Number(open.dataset.obj));
+   openModal(`<div class="eyebrow">ОБ’ЄКТ</div><h3>${o.title}</h3><p>${o.client}<br>${o.address}</p>
+   <p><b>Бригада:</b> ${o.crew}<br><b>Дедлайн:</b> ${o.deadline}<br><b>Прогрес:</b> ${o.progress}%<br><b>Вартість:</b> ${Number(o.value).toLocaleString('uk-UA')} ₴</p>
+   <p><b>Фото до:</b> ${o.photosBefore||0}<br><b>Фото після:</b> ${o.photosAfter||0}</p>
+   <button class="primary-btn" style="width:100%" onclick="addDemoPhoto(${o.id})">+ Додати фото після</button>`);
+ }
+ if(prog){
+   const o=objects.find(x=>x.id===Number(prog.dataset.progress)); o.progress=Math.min(100,o.progress+10); saveObjects(); renderObjects(); toast('Прогрес об’єкта оновлено');
+ }
 });
+window.addDemoPhoto=function(id){const o=objects.find(x=>x.id===id);o.photosAfter=(o.photosAfter||0)+1;saveObjects();closeModal();renderObjects();toast('Фото додано до об’єкта');};
 
+document.getElementById('add-object').addEventListener('click',()=>{
+ openModal(document.getElementById('object-form-template').innerHTML);
+ document.getElementById('object-form').addEventListener('submit',e=>{
+  e.preventDefault(); const f=new FormData(e.target);
+  objects.unshift({id:Date.now(),title:f.get('title'),client:f.get('client'),address:f.get('address'),crew:f.get('crew'),deadline:f.get('deadline'),value:Number(f.get('value')),progress:0,photosBefore:0,photosAfter:0});
+  saveObjects();closeModal();renderObjects();toast('Новий об’єкт створено');
+ });
+});
 const teamGrid=document.getElementById('team-grid');
 team.forEach(p=>{
   const card=document.createElement('div');
@@ -214,3 +247,43 @@ if (loginBtn) {
 const toastEl=document.createElement('div');
 toastEl.className='toast'; document.body.appendChild(toastEl);
 function toast(text){toastEl.textContent=text;toastEl.classList.add('show');setTimeout(()=>toastEl.classList.remove('show'),2200);}
+
+const defaultTasks=[
+ {id:201,title:'Передзвонити Олександру',owner:'Олексій Марченко',due:'today',done:false},
+ {id:202,title:'Уточнити затримку по покрівлі',owner:'Сергій Коваль',due:'overdue',done:false},
+ {id:203,title:'Повторний контакт після КП',owner:'Арсен',due:'today',done:false},
+ {id:204,title:'Перевірити фото з об’єкта',owner:'Сергій Коваль',due:'tomorrow',done:false}
+];
+let tasks;
+try{tasks=JSON.parse(localStorage.getItem('nexora_tasks'))||defaultTasks}catch(e){tasks=defaultTasks}
+let taskFilter='all';
+function saveTasks(){localStorage.setItem('nexora_tasks',JSON.stringify(tasks))}
+function renderTasks(){
+ const box=document.getElementById('task-list'); if(!box)return; box.innerHTML='';
+ const list=tasks.filter(t=>taskFilter==='all'||(taskFilter==='done'?t.done:(taskFilter==='overdue'?t.due==='overdue'&&!t.done:t.due===taskFilter&&!t.done)));
+ list.forEach(t=>{
+  const row=document.createElement('div');row.className='task-item'+(t.done?' done':'');
+  const due={today:'Сьогодні',tomorrow:'Завтра',overdue:'Прострочено'}[t.due]||t.due;
+  row.innerHTML=`<input class="task-check" type="checkbox" data-task-check="${t.id}" ${t.done?'checked':''}><div><b>${t.title}</b><small>${t.owner}</small></div><span class="badge ${t.due==='overdue'?'due-overdue':''}">${due}</span>`;
+  box.appendChild(row);
+ });
+ if(!list.length) box.innerHTML='<div class="panel"><div class="meta">У цій категорії завдань немає.</div></div>';
+}
+renderTasks();
+document.querySelectorAll('[data-task-filter]').forEach(b=>b.addEventListener('click',()=>{
+ document.querySelectorAll('[data-task-filter]').forEach(x=>x.classList.remove('active'));b.classList.add('active');taskFilter=b.dataset.taskFilter;renderTasks();
+}));
+document.getElementById('task-list').addEventListener('change',e=>{
+ if(!e.target.matches('[data-task-check]'))return;const t=tasks.find(x=>x.id===Number(e.target.dataset.taskCheck));t.done=e.target.checked;saveTasks();renderTasks();toast(t.done?'Завдання виконано':'Завдання повернуто');
+});
+document.getElementById('add-task').addEventListener('click',()=>{
+ openModal(document.getElementById('task-form-template').innerHTML);
+ document.getElementById('task-form').addEventListener('submit',e=>{
+  e.preventDefault();const f=new FormData(e.target);tasks.unshift({id:Date.now(),title:f.get('title'),owner:f.get('owner'),due:f.get('due'),done:false});saveTasks();closeModal();renderTasks();toast('Завдання створено');
+ });
+});
+document.getElementById('save-settings').addEventListener('click',()=>{
+ const name=document.getElementById('company-name').value.trim()||'NEXORA Company';
+ document.querySelector('.company-pill').textContent=name; localStorage.setItem('nexora_company',name);toast('Налаштування збережено');
+});
+const savedCompany=localStorage.getItem('nexora_company');if(savedCompany){document.getElementById('company-name').value=savedCompany;document.querySelector('.company-pill').textContent=savedCompany;}
