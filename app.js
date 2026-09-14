@@ -1,12 +1,15 @@
 
-const leads = [
-  {name:'Олександр К.', service:'Монтаж кондиціонера', phone:'+380 67 321 45 67', price:18500, status:'new', source:'Instagram'},
-  {name:'Марина П.', service:'Заміри вікон', phone:'+380 50 238 11 09', price:42000, status:'contact', source:'Сайт'},
-  {name:'Ігор М.', service:'Сервіс воріт', phone:'+380 93 517 02 20', price:12400, status:'work', source:'Telegram'},
-  {name:'ТОВ Альфа', service:'Монтаж обладнання', phone:'+380 66 190 77 52', price:96000, status:'contact', source:'Рекомендація'},
-  {name:'Світлана Д.', service:'Клінінг офісу', phone:'+380 98 550 18 44', price:7600, status:'new', source:'Instagram'},
-  {name:'Роман В.', service:'Ремонт покрівлі', phone:'+380 63 447 29 60', price:68500, status:'work', source:'Сайт'}
+const defaultLeads = [
+  {id:1,name:'Олександр К.', service:'Монтаж кондиціонера', phone:'+380 67 321 45 67', price:18500, status:'new', source:'Instagram', owner:'Олексій Марченко', note:'Передзвонити до 11:00', created:'Сьогодні, 09:12', history:['Заявка отримана з Instagram']},
+  {id:2,name:'Марина П.', service:'Заміри вікон', phone:'+380 50 238 11 09', price:42000, status:'contact', source:'Сайт', owner:'Олексій Марченко', note:'КП вже відправлено', created:'Вчора, 16:40', history:['Заявка з сайту','Комерційну пропозицію відправлено']},
+  {id:3,name:'Ігор М.', service:'Сервіс воріт', phone:'+380 93 517 02 20', price:12400, status:'work', source:'Telegram', owner:'Сергій Коваль', note:'Виїзд сьогодні', created:'14 вересня', history:['Заявка створена','Клієнту підтверджено виїзд','Передано в роботу']},
+  {id:4,name:'ТОВ Альфа', service:'Монтаж обладнання', phone:'+380 66 190 77 52', price:96000, status:'contact', source:'Рекомендація', owner:'Арсен', note:'Очікуємо рішення директора', created:'13 вересня', history:['Заявка створена','Проведено дзвінок','КП на 96 000 ₴ відправлено']},
+  {id:5,name:'Світлана Д.', service:'Клінінг офісу', phone:'+380 98 550 18 44', price:7600, status:'new', source:'Instagram', owner:'Олексій Марченко', note:'', created:'Сьогодні, 10:03', history:['Нова заявка з Instagram']},
+  {id:6,name:'Роман В.', service:'Ремонт покрівлі', phone:'+380 63 447 29 60', price:68500, status:'work', source:'Сайт', owner:'Сергій Коваль', note:'Об’єкт відстає на 1 день', created:'12 вересня', history:['Заявка з сайту','Кошторис погоджено','Передано бригаді']}
 ];
+let leads;
+try { leads = JSON.parse(localStorage.getItem('nexora_leads')) || defaultLeads; } catch(e){ leads = defaultLeads; }
+function saveLeads(){ localStorage.setItem('nexora_leads', JSON.stringify(leads)); }
 
 const objects = [
   {title:'Монтаж кондиціонера', client:'Олександр К.', address:'вул. Старокозацька, 44', progress:65, crew:'Бригада 1', value:'18 500 ₴'},
@@ -51,31 +54,83 @@ attention.forEach((a,i)=>{
   attentionList.appendChild(el);
 });
 
-function renderLeads(filter=''){
+function renderLeads(){
   const board = document.getElementById('lead-board');
+  const filter = (document.getElementById('lead-search')?.value || '').toLowerCase();
+  const source = document.getElementById('source-filter')?.value || '';
   const cols = [
     {key:'new',title:'Нові'},
     {key:'contact',title:'Контакт / КП'},
     {key:'work',title:'В роботі'}
   ];
+  const visible = leads.filter(l => (l.name+l.service+l.phone).toLowerCase().includes(filter) && (!source || l.source===source));
   board.innerHTML='';
   cols.forEach(c=>{
     const col = document.createElement('div');
     col.className='kanban-col';
-    const items = leads.filter(l=>l.status===c.key && (l.name+l.service+l.phone).toLowerCase().includes(filter.toLowerCase()));
+    const items = visible.filter(l=>l.status===c.key);
     col.innerHTML=`<h3>${c.title} · ${items.length}</h3>`;
     items.forEach(l=>{
       const card=document.createElement('div');
       card.className='lead-card';
-      card.innerHTML=`<div class="lead-top"><b>${l.name}</b><span class="money">${l.price.toLocaleString('uk-UA')} ₴</span></div><small>${l.service}</small><small>${l.phone}</small><span class="badge">${l.source}</span>`;
-      card.addEventListener('click',()=>openModal(`<div class="eyebrow">ЗАЯВКА</div><h3>${l.name}</h3><p>${l.service}<br>${l.phone}</p><p><b>Сума:</b> ${l.price.toLocaleString('uk-UA')} ₴<br><b>Джерело:</b> ${l.source}</p><button class="primary-btn" onclick="closeModal()">Позначити як опрацьовану</button>`));
+      card.innerHTML=`<div class="lead-top"><b>${l.name}</b><span class="money">${Number(l.price).toLocaleString('uk-UA')} ₴</span></div>
+        <small>${l.service}</small><small>${l.phone}</small>
+        <span class="badge">${l.source}</span>
+        <div class="lead-actions">
+          <button data-open="${l.id}">Картка</button>
+          <button data-next="${l.id}">${l.status==='new'?'В контакт →':l.status==='contact'?'В роботу →':'Завершити'}</button>
+        </div>`;
       col.appendChild(card);
     });
     board.appendChild(col);
   });
+  const active = leads.filter(l=>l.status!=='done');
+  document.getElementById('kpi-active').textContent=active.length;
+  document.getElementById('kpi-pipeline').textContent=active.reduce((s,l)=>s+Number(l.price||0),0).toLocaleString('uk-UA')+' ₴';
+  document.getElementById('kpi-risk').textContent=leads.filter(l=>l.status==='new').length;
 }
 renderLeads();
-document.getElementById('lead-search').addEventListener('input',e=>renderLeads(e.target.value));
+document.getElementById('lead-search').addEventListener('input',renderLeads);
+document.getElementById('source-filter').addEventListener('change',renderLeads);
+
+document.getElementById('lead-board').addEventListener('click', e=>{
+  const open=e.target.closest('[data-open]');
+  const next=e.target.closest('[data-next]');
+  if(open) openLead(Number(open.dataset.open));
+  if(next) advanceLead(Number(next.dataset.next));
+});
+
+function advanceLead(id){
+  const l=leads.find(x=>x.id===id); if(!l) return;
+  if(l.status==='new'){l.status='contact';l.history.push('Статус змінено: Контакт / КП');}
+  else if(l.status==='contact'){l.status='work';l.history.push('Статус змінено: В роботі');}
+  else {l.status='done';l.history.push('Роботу завершено');}
+  saveLeads(); renderLeads(); toast('Статус заявки оновлено');
+}
+
+function openLead(id){
+  const l=leads.find(x=>x.id===id); if(!l) return;
+  const statusName={new:'Нова',contact:'Контакт / КП',work:'В роботі',done:'Виконана'};
+  openModal(`<div class="eyebrow">КАРТКА КЛІЄНТА</div>
+    <h3>${l.name}</h3>
+    <p>${l.service}<br>${l.phone}</p>
+    <p><b>Сума:</b> ${Number(l.price).toLocaleString('uk-UA')} ₴<br><b>Відповідальний:</b> ${l.owner||'—'}<br><b>Джерело:</b> ${l.source}<br><b>Створено:</b> ${l.created||'—'}</p>
+    ${l.note?`<p><b>Коментар:</b> ${l.note}</p>`:''}
+    <select class="status-select" id="lead-status-edit">
+      <option value="new" ${l.status==='new'?'selected':''}>Нова</option>
+      <option value="contact" ${l.status==='contact'?'selected':''}>Контакт / КП</option>
+      <option value="work" ${l.status==='work'?'selected':''}>В роботі</option>
+      <option value="done" ${l.status==='done'?'selected':''}>Виконана</option>
+    </select>
+    <button class="primary-btn" style="width:100%" onclick="updateLeadStatus(${l.id})">Зберегти статус</button>
+    <div class="activity-log">${(l.history||[]).slice().reverse().map(h=>`<div class="activity-row"><b>Подія</b><br>${h}</div>`).join('')}</div>`);
+}
+window.updateLeadStatus=function(id){
+  const l=leads.find(x=>x.id===id); if(!l) return;
+  const val=document.getElementById('lead-status-edit').value;
+  l.status=val; l.history=l.history||[]; l.history.push('Статус змінено вручну');
+  saveLeads(); closeModal(); renderLeads(); toast('Зміни збережено');
+};
 
 const objectGrid=document.getElementById('object-grid');
 objects.forEach(o=>{
@@ -124,7 +179,20 @@ document.getElementById('open-ai').addEventListener('click',()=>openModal(`
 `));
 
 document.getElementById('demo-alerts').addEventListener('click',()=>openModal(`<div class="eyebrow">СПОВІЩЕННЯ</div><h3>3 нові події</h3><p>Нова заявка з Instagram · 6 хв тому</p><p>Бригада 1 прибула на об’єкт · 18 хв тому</p><p>КП переглянуто клієнтом · 31 хв тому</p>`));
-document.getElementById('add-lead').addEventListener('click',()=>openModal(`<div class="eyebrow">ДЕМО</div><h3>Створення заявки</h3><p>У повній версії тут буде форма клієнта, послуга, сума, відповідальний і джерело заявки.</p>`));
+document.getElementById('add-lead').addEventListener('click',()=>{
+  const tpl=document.getElementById('lead-form-template');
+  openModal(tpl.innerHTML);
+  document.getElementById('lead-form').addEventListener('submit',e=>{
+    e.preventDefault();
+    const f=new FormData(e.target);
+    leads.unshift({
+      id:Date.now(), name:f.get('name'), phone:f.get('phone'), service:f.get('service'),
+      price:Number(f.get('price')), source:f.get('source'), owner:f.get('owner'),
+      note:f.get('note'), status:'new', created:'Щойно', history:['Заявку створено вручну']
+    });
+    saveLeads(); closeModal(); renderLeads(); toast('Нову заявку створено');
+  });
+});
 document.getElementById('add-person').addEventListener('click',()=>openModal(`<div class="eyebrow">ДЕМО</div><h3>Додавання працівника</h3><p>У повній версії можна буде видати роль, права доступу та прив’язати Telegram.</p>`));
 
 document.querySelectorAll('[data-attention]').forEach(()=>{});
@@ -142,3 +210,7 @@ if (loginBtn) {
     document.getElementById('login-screen').classList.add('hidden');
   });
 }
+
+const toastEl=document.createElement('div');
+toastEl.className='toast'; document.body.appendChild(toastEl);
+function toast(text){toastEl.textContent=text;toastEl.classList.add('show');setTimeout(()=>toastEl.classList.remove('show'),2200);}

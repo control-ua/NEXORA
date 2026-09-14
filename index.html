@@ -129,9 +129,24 @@
       </section>
 
       <section id="leads" class="page">
+        <div class="section-intro">
+          <div>
+            <div class="eyebrow">PIPELINE</div>
+            <h2>Заявки та продажі</h2>
+          </div>
+          <button class="primary-btn" id="add-lead">+ Нова заявка</button>
+        </div>
+        <div class="lead-kpis">
+          <div><span>У роботі</span><b id="kpi-active">0</b></div>
+          <div><span>Сума pipeline</span><b id="kpi-pipeline">0 ₴</b></div>
+          <div><span>Без контакту</span><b id="kpi-risk">0</b></div>
+        </div>
         <div class="toolbar">
           <div class="search-wrap"><input id="lead-search" placeholder="Пошук за клієнтом, телефоном або послугою" /></div>
-          <button class="primary-btn" id="add-lead">+ Нова заявка</button>
+          <select id="source-filter" class="select-control">
+            <option value="">Усі джерела</option>
+            <option>Instagram</option><option>Сайт</option><option>Telegram</option><option>Рекомендація</option>
+          </select>
         </div>
         <div class="kanban" id="lead-board"></div>
       </section>
@@ -191,6 +206,21 @@
       <div id="modal-content"></div>
     </div>
   </div>
+
+  <template id="lead-form-template">
+    <form id="lead-form" class="form-grid">
+      <div class="eyebrow full">НОВА ЗАЯВКА</div>
+      <h3 class="full">Додати клієнта</h3>
+      <label class="full">Клієнт<input name="name" required placeholder="Ім’я або компанія"></label>
+      <label>Телефон<input name="phone" required placeholder="+380..."></label>
+      <label>Джерело<select name="source"><option>Instagram</option><option>Сайт</option><option>Telegram</option><option>Рекомендація</option></select></label>
+      <label class="full">Послуга<input name="service" required placeholder="Що потрібно клієнту"></label>
+      <label>Сума, ₴<input name="price" type="number" min="0" required placeholder="25000"></label>
+      <label>Відповідальний<select name="owner"><option>Олексій Марченко</option><option>Сергій Коваль</option><option>Арсен</option></select></label>
+      <label class="full">Коментар<textarea name="note" rows="3" placeholder="Деталі заявки"></textarea></label>
+      <button class="primary-btn full" type="submit">Створити заявку</button>
+    </form>
+  </template>
 
   <script src="app.js"></script>
 </body>
