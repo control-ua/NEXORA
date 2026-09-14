@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0d1117" />
+  <title>CONTROL AI — Демо</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">C</div>
+        <div>
+          <div class="brand-title">CONTROL AI</div>
+          <div class="brand-sub">Бізнес під контролем</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-item active" data-page="dashboard">⌂ <span>Головна</span></button>
+        <button class="nav-item" data-page="leads">◎ <span>Заявки</span></button>
+        <button class="nav-item" data-page="objects">▦ <span>Об’єкти</span></button>
+        <button class="nav-item" data-page="team">👥 <span>Команда</span></button>
+        <button class="nav-item" data-page="analytics">↗ <span>Аналітика</span></button>
+      </nav>
+
+      <div class="sidebar-card">
+        <div class="small-label">AI-контроль</div>
+        <div class="sidebar-stat">7</div>
+        <div class="sidebar-note">ситуацій потребують уваги</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">ДЕМО-ПРОСТІР</div>
+          <h1 id="page-title">Головна</h1>
+        </div>
+        <div class="top-actions">
+          <button class="ghost-btn" id="demo-alerts">🔔 <span>3</span></button>
+          <div class="avatar">AZ</div>
+        </div>
+      </header>
+
+      <section id="dashboard" class="page active">
+        <div class="hero-card">
+          <div>
+            <div class="eyebrow">СЬОГОДНІ · 15 ВЕРЕСНЯ</div>
+            <h2>Добрий ранок, Арсен</h2>
+            <p>Система вже знайшла 3 заявки, які можуть втратитися без контакту сьогодні.</p>
+          </div>
+          <button class="primary-btn" id="open-ai">Переглянути AI-рекомендації</button>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-label">Виручка сьогодні</span>
+            <strong>84 500 ₴</strong>
+            <span class="positive">+18% до вчора</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Нові заявки</span>
+            <strong>12</strong>
+            <span>3 ще без відповіді</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">В роботі</span>
+            <strong>8</strong>
+            <span>5 виїздів сьогодні</span>
+          </div>
+          <div class="stat-card danger">
+            <span class="stat-label">Просрочено</span>
+            <strong>3</strong>
+            <span>потребують уваги</span>
+          </div>
+        </div>
+
+        <div class="content-grid">
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <div class="eyebrow">AI-КОНТРОЛЬ</div>
+                <h3>Потребує уваги</h3>
+              </div>
+              <button class="link-btn" data-page-jump="leads">Усі заявки →</button>
+            </div>
+            <div id="attention-list"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <div class="eyebrow">СЬОГОДНІ</div>
+                <h3>Роботи команди</h3>
+              </div>
+            </div>
+            <div class="timeline">
+              <div class="timeline-item"><span>09:30</span><div><b>Монтаж кондиціонера</b><small>вул. Старокозацька · Бригада 1</small></div></div>
+              <div class="timeline-item"><span>12:00</span><div><b>Заміри вікон</b><small>ж/м Перемога · Олексій</small></div></div>
+              <div class="timeline-item"><span>15:30</span><div><b>Сервіс воріт</b><small>вул. Калинова · Бригада 2</small></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="leads" class="page">
+        <div class="toolbar">
+          <div class="search-wrap"><input id="lead-search" placeholder="Пошук за клієнтом, телефоном або послугою" /></div>
+          <button class="primary-btn" id="add-lead">+ Нова заявка</button>
+        </div>
+        <div class="kanban" id="lead-board"></div>
+      </section>
+
+      <section id="objects" class="page">
+        <div class="section-intro">
+          <div>
+            <div class="eyebrow">ОБ’ЄКТИ</div>
+            <h2>Виконання робіт</h2>
+          </div>
+          <span class="chip">8 активних</span>
+        </div>
+        <div class="object-grid" id="object-grid"></div>
+      </section>
+
+      <section id="team" class="page">
+        <div class="section-intro">
+          <div>
+            <div class="eyebrow">КОМАНДА</div>
+            <h2>Завантаженість співробітників</h2>
+          </div>
+          <button class="primary-btn" id="add-person">+ Додати працівника</button>
+        </div>
+        <div class="team-grid" id="team-grid"></div>
+      </section>
+
+      <section id="analytics" class="page">
+        <div class="stats-grid analytics-stats">
+          <div class="stat-card"><span class="stat-label">Конверсія</span><strong>31%</strong><span class="positive">+4,2%</span></div>
+          <div class="stat-card"><span class="stat-label">Середній чек</span><strong>18 760 ₴</strong><span>за 30 днів</span></div>
+          <div class="stat-card"><span class="stat-label">AI повернув</span><strong>126 400 ₴</strong><span>потенційної виручки</span></div>
+          <div class="stat-card"><span class="stat-label">Втрачено</span><strong>42 800 ₴</strong><span>без повторного контакту</span></div>
+        </div>
+
+        <div class="content-grid analytics-grid">
+          <div class="panel">
+            <div class="panel-head"><h3>Виручка за 7 днів</h3></div>
+            <div class="bars" id="bars"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Джерела заявок</h3></div>
+            <div class="sources">
+              <div><span>Instagram</span><b>38%</b></div>
+              <div><span>Сайт</span><b>27%</b></div>
+              <div><span>Telegram</span><b>21%</b></div>
+              <div><span>Рекомендації</span><b>14%</b></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="modal-backdrop">
+    <div class="modal">
+      <button class="modal-close" id="modal-close">×</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
